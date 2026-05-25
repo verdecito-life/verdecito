@@ -1,0 +1,35 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://verdecito.life/spec/v0.1/ask.schema.yaml
+title: Ask
+description: A request for support — funding, collaboration, mentorship, attention. Stub schema in v0.1.
+type: object
+required:
+  - id
+  - type
+  - title
+  - schema_version
+properties:
+  id:
+    type: string
+    pattern: "^ask:[a-z0-9-]+:[a-z0-9-]+$"
+  type:
+    const: ask
+  title:
+    type: string
+  summary:
+    type: string
+  schema_version:
+    type: string
+  stability:
+    const: experimental
+  relationships:
+    type: object
+    properties:
+      channels:
+        type: array
+        items:
+          type: string
+      quests:
+        type: array
+        items:
+          type: string

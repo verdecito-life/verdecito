@@ -1,0 +1,24 @@
+# Engine term → Verdecito skin label
+#
+# Two sections: 'types' for object types, 'kinds' for object subtypes (artifact kinds).
+# Most types pass through unchanged; the key mappings are channel→door and gift→regalito.
+
+types:
+  tracker: tracker
+  identity: identity
+  seed: seed
+  sprint: sprint
+  quest: quest
+  task: task
+  artifact: artifact
+  channel: door          # Verdecito surfaces channels as "doors" (puertas)
+  ask: ask
+
+kinds:
+  artifact:
+    critique: critique
+    insight: insight
+    synthesis: synthesis
+    gift: regalito       # Verdecito term for a small gift-shaped artifact
+    document: document
+    other: other

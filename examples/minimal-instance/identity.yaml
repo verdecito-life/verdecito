@@ -1,0 +1,10 @@
+id: identity:example
+type: identity
+title: Example
+schema_version: 0.1.0
+summary: A placeholder identity for the minimal example.
+values:
+  - placeholder value
+authors:
+  - example-author
+stability: experimental

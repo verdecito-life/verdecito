@@ -1,0 +1,26 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://verdecito.life/spec/v0.1/sprint.schema.yaml
+title: Sprint
+description: A time-bounded grouping of quests. Stub schema — fields will firm up in v0.2.
+type: object
+required:
+  - id
+  - type
+  - title
+  - schema_version
+properties:
+  id:
+    type: string
+    pattern: "^sprint:[a-z0-9-]+:[0-9]{3}$"
+  type:
+    const: sprint
+  title:
+    type: string
+  summary:
+    type: string
+  lifecycle:
+    enum: [draft, active, archived]
+  schema_version:
+    type: string
+  stability:
+    const: experimental

@@ -1,0 +1,21 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://verdecito.life/spec/v0.1/task.schema.yaml
+title: Task
+description: A unit of work within a quest. Stub — in v0.1 tasks live as bullet lists inside quest bodies.
+type: object
+required:
+  - id
+  - type
+  - title
+  - schema_version
+properties:
+  id:
+    type: string
+  type:
+    const: task
+  title:
+    type: string
+  schema_version:
+    type: string
+  stability:
+    const: experimental

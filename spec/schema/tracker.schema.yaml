@@ -1,0 +1,33 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://verdecito.life/spec/v0.1/tracker.schema.yaml
+title: Tracker
+description: The singleton object per Verdecito instance. Declares which identity and skin govern the instance.
+type: object
+required:
+  - id
+  - type
+  - title
+  - identity
+  - declared_skin
+  - schema_version
+properties:
+  id:
+    type: string
+    pattern: "^tracker:[a-z0-9-]+$"
+  type:
+    const: tracker
+  title:
+    type: string
+  identity:
+    type: string
+    pattern: "^identity:[a-z0-9-]+$"
+  declared_skin:
+    type: string
+  schema_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  description:
+    type: string
+  stability:
+    enum: [stable, experimental]
+    default: experimental

@@ -1,0 +1,17 @@
+Verdecito v0.1 — License notice
+
+This repository uses a split license:
+
+  - Code, spec schemas, configuration files, and tooling are licensed
+    under the MIT License (see LICENSE).
+  - Prose, object definitions, methodology, and written content are
+    licensed under Creative Commons Attribution 4.0 International
+    (see LICENSE-CONTENT).
+
+Verdecito invites reciprocity but does not require it. Forks may be
+public, private, commercial, renamed, adapted, or closed-source.
+
+Attribution is required for CC BY content. Attribution may be a simple
+link back to this repository or to verdecito-life on GitHub.
+
+Authorship: Ernesto Rivera and contributors. See git history.

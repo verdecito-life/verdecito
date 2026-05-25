@@ -1,0 +1,8 @@
+id: tracker:verdecito
+type: tracker
+title: Verdecito (public reference tracker)
+identity: identity:verdecito
+declared_skin: verdecito
+schema_version: 0.1.0
+description: The first public Verdecito instance. Curated, public-safe surface of work that cares for life.
+stability: experimental

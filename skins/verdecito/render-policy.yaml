@@ -1,0 +1,26 @@
+# What this skin renders publicly.
+#
+# A future renderer (Astro, GPT, dashboard) reads this file to decide which
+# objects appear on the public Verdecito surface, and how.
+
+include:
+  visibility:
+    - public
+    - teaser
+  lifecycle:
+    - active
+
+exclude:
+  visibility:
+    - private
+
+teaser_behavior:
+  show_title: true
+  show_summary: true
+  show_body: false
+  show_cta: subscribe-or-fork
+
+ordering:
+  default: created_desc
+
+incompatible_schema_version: hide

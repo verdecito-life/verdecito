@@ -1,0 +1,7 @@
+name: verdecito
+title: Verdecito (default public skin)
+description: The default skin for the Verdecito public surface.
+version: 0.1.0
+schema_version_compat: "0.1.x"
+maintainer: Ernesto Rivera
+stability: experimental

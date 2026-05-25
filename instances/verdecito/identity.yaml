@@ -1,0 +1,17 @@
+id: identity:verdecito
+type: identity
+title: Verdecito
+schema_version: 0.1.0
+summary: |
+  A way to organize work that cares for life. Open spec, open instance, open invitation.
+  Regenerative in stance, evidence-friendly, hospitable to people who do not share its
+  spiritual frame.
+values:
+  - regeneration over extraction
+  - simplicity over completeness
+  - evidence over claims
+  - openness over enclosure
+  - reciprocity invited, not required
+authors:
+  - Ernesto Rivera
+stability: experimental

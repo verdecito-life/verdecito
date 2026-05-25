@@ -1,0 +1,55 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: https://verdecito.life/spec/v0.1/quest.schema.yaml
+title: Quest
+description: A concrete initiative. Quests may belong to multiple seeds and sprints simultaneously.
+type: object
+required:
+  - id
+  - type
+  - title
+  - visibility
+  - lifecycle
+  - schema_version
+properties:
+  id:
+    type: string
+    pattern: "^quest:[a-z0-9-]+:[0-9]{3}$"
+  type:
+    const: quest
+  title:
+    type: string
+  summary:
+    type: string
+  visibility:
+    enum: [public, teaser, private]
+  lifecycle:
+    enum: [draft, active, archived]
+  schema_version:
+    type: string
+    pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+  created:
+    type: string
+    format: date
+  updated:
+    type: string
+    format: date
+  relationships:
+    type: object
+    properties:
+      seeds:
+        type: array
+        items:
+          type: string
+      sprints:
+        type: array
+        items:
+          type: string
+      artifacts:
+        type: array
+        items:
+          type: string
+      channels:
+        type: array
+        items:
+          type: string
+    additionalProperties: false
