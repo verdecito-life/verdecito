@@ -1,0 +1,58 @@
+---
+// apps/site/src/pages/support.astro
+import Base from '../layouts/Base.astro';
+import { getSupportInfo } from '../lib/verdecito';
+
+const { ask, channel } = getSupportInfo();
+const sponsorsUrl = channel.url as string;
+---
+
+<Base
+  title="Support"
+  description="Sustain Verdecito core work — spec, reference instance, and methodology."
+>
+  <div class="page-hero" style="margin-top:2rem">
+    <div class="eyebrow">Support</div>
+    <h1>{ask.title as string}</h1>
+    <p>{(ask.summary as string).trim()}</p>
+  </div>
+
+  <section>
+    <p>
+      Verdecito is open spec, open instance, and open invitation. Sustaining it means
+      sustaining time: time to refine the spec, curate the reference instance, and build
+      the tooling that makes it useful for others.
+    </p>
+
+    <p>
+      The primary channel is <strong>GitHub Sponsors</strong>. Five tiers, tied to
+      concrete enabling levels. No lock-in, no subscription trap — cancel anytime.
+    </p>
+
+    <div class="cta-block" style="margin-top:2rem">
+      <h2>Sponsor on GitHub</h2>
+      <p>{(channel.summary as string).trim()}</p>
+      <a href={sponsorsUrl} target="_blank" rel="noopener" class="btn">
+        Sponsor on GitHub →
+      </a>
+    </div>
+  </section>
+
+  <section style="margin-top:3rem">
+    <h2>Other ways to contribute</h2>
+    <ul>
+      <li>
+        <strong>Fork the spec.</strong> Clone, adapt, and run your own instance.
+        That's the best signal that Verdecito is useful.
+      </li>
+      <li>
+        <strong>Open an issue.</strong> Critique, question, propose.
+        <a href="https://github.com/verdecito-life" target="_blank" rel="noopener">GitHub org →</a>
+      </li>
+      <li>
+        <strong>Share it.</strong> Point the people who should know about this at the repo
+        or this site.
+      </li>
+    </ul>
+  </section>
+</Base>

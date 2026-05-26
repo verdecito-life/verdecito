@@ -1,0 +1,37 @@
+---
+// apps/site/src/pages/quests/index.astro
+import Base from '../../layouts/Base.astro';
+import { getQuests } from '../../lib/verdecito';
+
+const quests = await getQuests();
+---
+
+<Base
+  title="Quests"
+  description="Active quests in the Verdecito public reference instance."
+>
+  <div class="page-hero" style="margin-top:2rem">
+    <div class="eyebrow">Quests</div>
+    <h1>Quests</h1>
+    <p>
+      A quest is a concrete goal — time-bounded, linked to seeds, and closeable.
+      Showing {quests.length} active quest{quests.length !== 1 ? 's' : ''}.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    {quests.map(quest => (
+      <a href={`/quests/${quest.slug}`} class="card">
+        <div class="card-title">
+          {quest.title}
+          {quest.visibility === 'teaser' && <span class="badge badge-teaser">teaser</span>}
+        </div>
+        {quest.summary && <p class="card-summary">{quest.summary.trim()}</p>}
+      </a>
+    ))}
+  </div>
+
+  {quests.length === 0 && (
+    <p style="color:var(--muted)">No public quests right now. Check back soon.</p>
+  )}
+</Base>

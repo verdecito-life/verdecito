@@ -1,0 +1,37 @@
+---
+// apps/site/src/pages/seeds/index.astro
+import Base from '../../layouts/Base.astro';
+import { getSeeds } from '../../lib/verdecito';
+
+const seeds = await getSeeds();
+---
+
+<Base
+  title="Seeds"
+  description="Active seeds in the Verdecito public reference instance."
+>
+  <div class="page-hero" style="margin-top:2rem">
+    <div class="eyebrow">Seeds</div>
+    <h1>Seeds</h1>
+    <p>
+      A seed is a living idea — a node of work that can grow, fork, or link to quests.
+      Showing {seeds.length} active seed{seeds.length !== 1 ? 's' : ''}.
+    </p>
+  </div>
+
+  <div class="card-grid">
+    {seeds.map(seed => (
+      <a href={`/seeds/${seed.slug}`} class="card">
+        <div class="card-title">
+          {seed.title}
+          {seed.visibility === 'teaser' && <span class="badge badge-teaser">teaser</span>}
+        </div>
+        {seed.summary && <p class="card-summary">{seed.summary.trim()}</p>}
+      </a>
+    ))}
+  </div>
+
+  {seeds.length === 0 && (
+    <p style="color:var(--muted)">No public seeds right now. Check back soon.</p>
+  )}
+</Base>

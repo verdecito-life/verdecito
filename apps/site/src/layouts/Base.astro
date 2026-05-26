@@ -1,0 +1,75 @@
+---
+// apps/site/src/layouts/Base.astro
+// Shared shell for all Verdecito pages.
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'A living, forkable way for work that cares for life.' } = Astro.props;
+const fullTitle = title === 'Verdecito' ? title : `${title} — Verdecito`;
+
+const nav = [
+  { href: '/',             label: 'Home'         },
+  { href: '/tracker',      label: 'Tracker'      },
+  { href: '/seeds',        label: 'Seeds'        },
+  { href: '/quests',       label: 'Quests'       },
+  { href: '/how-it-works', label: 'How It Works' },
+  { href: '/support',      label: 'Support'      },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <a href="/" class="site-name">verde<span>cito</span></a>
+        <nav>
+          {nav.map(({ href, label }) => (
+            <a
+              href={href}
+              aria-current={currentPath === href || (href !== '/' && currentPath.startsWith(href)) ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          Verdecito · Open spec · Open instance ·
+          <a href="https://github.com/verdecito-life" target="_blank" rel="noopener">GitHub</a>
+          ·
+          <a href="/support">Support</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

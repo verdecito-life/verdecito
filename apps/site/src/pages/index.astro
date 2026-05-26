@@ -1,0 +1,72 @@
+---
+// apps/site/src/pages/index.astro
+import Base from '../layouts/Base.astro';
+import { getIdentity, getSeeds, getQuests } from '../lib/verdecito';
+
+const identity = getIdentity();
+const seeds  = await getSeeds();
+const quests = await getQuests();
+
+const title   = identity.title as string;
+const summary = identity.summary as string;
+const values  = identity.values as string[];
+---
+
+<Base title="Verdecito" description={summary.trim()}>
+  <div class="page-hero" style="margin-top:2rem">
+    <div class="eyebrow">Public Reference Instance</div>
+    <h1>{title}</h1>
+    <p>{summary.trim()}</p>
+  </div>
+
+  {values?.length > 0 && (
+    <section>
+      <h2>Values</h2>
+      <ul class="values-list">
+        {values.map((v: string) => <li>{v}</li>)}
+      </ul>
+    </section>
+  )}
+
+  <section>
+    <h2>Seeds <small style="font-weight:400;color:var(--muted);font-size:0.85em">({seeds.length} active)</small></h2>
+    <div class="card-grid">
+      {seeds.slice(0, 4).map(seed => (
+        <a href={`/seeds/${seed.slug}`} class="card">
+          <div class="card-title">
+            {seed.title}
+            {seed.visibility === 'teaser' && <span class="badge badge-teaser">teaser</span>}
+          </div>
+          {seed.summary && <p class="card-summary">{seed.summary.trim()}</p>}
+        </a>
+      ))}
+    </div>
+    {seeds.length > 4 && (
+      <p style="margin-top:0.75rem"><a href="/seeds">View all {seeds.length} seeds →</a></p>
+    )}
+  </section>
+
+  <section style="margin-top:2.5rem">
+    <h2>Quests <small style="font-weight:400;color:var(--muted);font-size:0.85em">({quests.length} active)</small></h2>
+    <div class="card-grid">
+      {quests.slice(0, 4).map(quest => (
+        <a href={`/quests/${quest.slug}`} class="card">
+          <div class="card-title">
+            {quest.title}
+            {quest.visibility === 'teaser' && <span class="badge badge-teaser">teaser</span>}
+          </div>
+          {quest.summary && <p class="card-summary">{quest.summary.trim()}</p>}
+        </a>
+      ))}
+    </div>
+    {quests.length > 4 && (
+      <p style="margin-top:0.75rem"><a href="/quests">View all {quests.length} quests →</a></p>
+    )}
+  </section>
+
+  <div class="cta-block">
+    <h2>Support Verdecito</h2>
+    <p>Sustain the spec, the reference instance, and the methodology behind both.</p>
+    <a href="/support" class="btn">See support options →</a>
+  </div>
+</Base>
