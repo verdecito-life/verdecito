@@ -1,0 +1,79 @@
+# .github/workflows/deploy.yml
+# Builds the Verdecito Astro site and deploys to GitHub Pages.
+#
+# Triggers:
+#   - Push to main branch (automatic deploy)
+#   - Manual trigger via workflow_dispatch (useful for first deploy or rerun)
+#
+# Required repo setting (one-time, manual):
+#   Settings → Pages → Source → "GitHub Actions"
+#
+# Environment variables injected at build time:
+#   SITE_URL  = https://verdecito-life.github.io   (no trailing slash)
+#   BASE_PATH = /verdecito
+#
+# When a custom domain is added later:
+#   1. Add public/CNAME to apps/site/public/ with the domain (e.g. verdecito.life)
+#   2. Update SITE_URL to https://verdecito.life
+#   3. Set BASE_PATH to /
+#   4. Update Settings → Pages → Custom domain
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages:    write
+  id-token: write
+
+# Only one deploy at a time; don't cancel in-progress deploys.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Astro site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/site/package-lock.json
+
+      - name: Install dependencies
+        working-directory: apps/site
+        run: npm ci
+
+      - name: Build
+        working-directory: apps/site
+        env:
+          SITE_URL:  https://verdecito-life.github.io
+          BASE_PATH: /verdecito
+        run: npm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/site/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

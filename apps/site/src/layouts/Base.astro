@@ -1,25 +1,50 @@
 ---
 // apps/site/src/layouts/Base.astro
-// Shared shell for all Verdecito pages.
+// Shared shell for all Verdecito v0.1 public pages.
+//
+// Internal link helper:
+//   u('/path') prepends BASE_URL so links work both locally (base='/') and
+//   on GH Pages (base='/verdecito'). External links are unchanged.
+//
+// Public nav (4 items only, per Content Skeleton v0.1 / C' default):
+//   Home · Living Memory · Method · Support
+// About is reachable from the Home hero micro-link and footer, NOT top nav.
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'A living, forkable way for work that cares for life.' } = Astro.props;
+const {
+  title,
+  description = 'A forkable space where conversations, ideas, artifacts, and pilots leave reusable traces — not noise.',
+} = Astro.props;
+
 const fullTitle = title === 'Verdecito' ? title : `${title} — Verdecito`;
 
+// BASE is '/verdecito' in production, '' locally (BASE_URL trailing slash removed).
+// u() prefixes any site-internal path correctly in both environments.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+function u(path: string): string { return `${BASE}${path}`; }
+
+// Public v0.1 top nav — keep to 4 items.
 const nav = [
-  { href: '/',             label: 'Home'         },
-  { href: '/tracker',      label: 'Tracker'      },
-  { href: '/seeds',        label: 'Seeds'        },
-  { href: '/quests',       label: 'Quests'       },
-  { href: '/how-it-works', label: 'How It Works' },
-  { href: '/support',      label: 'Support'      },
+  { href: u('/'),            label: 'Home'          },
+  { href: u('/quests/Q001'), label: 'Living Memory' },
+  { href: u('/method'),      label: 'Method'        },
+  { href: u('/support'),     label: 'Support'       },
 ];
 
 const currentPath = Astro.url.pathname;
+function isCurrent(href: string): boolean {
+  if (href === u('/')) return currentPath === href || currentPath === `${BASE}/`;
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+
+// TODO: move these constants into a canonical site-config object.
+const REPO_URL    = 'https://github.com/verdecito-life/verdecito';
+const LICENSE_URL = 'https://github.com/verdecito-life/verdecito/blob/main/LICENSE';
+const CONTACT_MAILTO = 'mailto:verdecito@barranco.life?subject=General%20contact';
 ---
 
 <!doctype html>
@@ -29,7 +54,7 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -37,13 +62,10 @@ const currentPath = Astro.url.pathname;
   <body>
     <header>
       <div class="container">
-        <a href="/" class="site-name">verde<span>cito</span></a>
+        <a href={u('/')} class="site-name">verde<span>cito</span></a>
         <nav>
           {nav.map(({ href, label }) => (
-            <a
-              href={href}
-              aria-current={currentPath === href || (href !== '/' && currentPath.startsWith(href)) ? 'page' : undefined}
-            >
+            <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
               {label}
             </a>
           ))}
@@ -60,11 +82,13 @@ const currentPath = Astro.url.pathname;
     <footer>
       <div class="container">
         <p>
-          Verdecito · Open spec · Open instance ·
-          <a href="https://github.com/verdecito-life" target="_blank" rel="noopener">GitHub</a>
-          ·
-          <a href="/support">Support</a>
+          <a href={REPO_URL}    target="_blank" rel="noopener">Repo</a> ·
+          <a href={LICENSE_URL} target="_blank" rel="noopener">License</a> ·
+          <a href={u('/method#lineage')}>Lineage</a> ·
+          <a href={u('/about')}>About</a> ·
+          <a href={CONTACT_MAILTO}>Contact</a>
         </p>
+        <p class="footer-tagline">Verdecito lo que salga — let it sprout. 🌿</p>
       </div>
     </footer>
   </body>
@@ -73,3 +97,4 @@ const currentPath = Astro.url.pathname;
 <style is:global>
   @import '../styles/global.css';
 </style>
+<!-- apps/site/src/layouts/Base.astro / shared site shell / public v0.1 nav and footer -->
