@@ -1,0 +1,102 @@
+---
+// apps/site/src/components/pages/Home.astro
+// Home page body. Renders ONLY from the copy store. lang-agnostic.
+import type { Lang } from '../../lib/lang';
+import { href } from '../../lib/lang';
+import { images } from '../../copy/common';
+import { home } from '../../copy/home';
+import Hero from '../Hero.astro';
+import CtaGroup from '../CtaGroup.astro';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (p: string) => `${BASE}${p}`;
+const link = (p: string) => href(BASE, lang, p);
+const T = (k: keyof typeof home) => home[k][lang];
+---
+<Hero
+  eyebrow={T('heroEyebrow')}
+  title={T('heroTitle')}
+  subtitle={T('heroSubtitle')}
+  body={T('heroBody')}
+  imageSrc={u(images.home.src)}
+  imageAlt={images.home.alt[lang]}
+  imageW={images.home.w}
+  imageH={images.home.h}
+>
+  <CtaGroup
+    ctas={[
+      { label: T('heroPrimary'),   href: link('/quests/Q001'), variant: 'primary' },
+      { label: T('heroSecondary'), href: link('/method'),      variant: 'secondary' },
+    ]}
+  />
+  <p class="hero-microlink"><a href={link('/about')}>{T('heroMicrolink')}</a></p>
+</Hero>
+
+<!-- Current quest -->
+<section class="section">
+  <div class="container">
+    <p class="eyebrow">{T('questLabel')}</p>
+    <h2 class="section-title">{T('questTitle')}</h2>
+    <p class="label" style="margin-bottom: var(--space-4);">{T('questObject')}</p>
+    <div class="prose stack-4">
+      <p>{T('questBody')}</p>
+      <p>{T('questProof')}</p>
+    </div>
+    <p class="label" style="margin: var(--space-6) 0 var(--space-5);">{T('questStatus')}</p>
+    <CtaGroup
+      ctas={[
+        { label: T('questPrimary'),   href: link('/quests/Q001'), variant: 'primary' },
+        { label: T('questSecondary'), href: link('/method'),      variant: 'secondary' },
+      ]}
+    />
+  </div>
+</section>
+
+<!-- Method teaser -->
+<section class="section band-soft">
+  <div class="container">
+    <h2 class="section-title">{T('methodTitle')}</h2>
+    <p class="section-intro">{T('methodIntro')}</p>
+    <div class="card-grid cols-3">
+      <div class="card">
+        <h3 class="card-title">{T('seedsTitle')}</h3>
+        <p class="card-body">{T('seedsBody')}</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title">{T('questsTitle')}</h3>
+        <p class="card-body">{T('questsBody')}</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title">{T('sproutsTitle')}</h3>
+        <p class="card-body">{T('sproutsBody')}</p>
+      </div>
+    </div>
+    <div style="margin-top: var(--space-8);">
+      <CtaGroup ctas={[{ label: T('methodCta'), href: link('/method'), variant: 'secondary' }]} />
+    </div>
+  </div>
+</section>
+
+<!-- Lineage strip -->
+<section class="section">
+  <div class="container">
+    <div class="lineage-strip">
+      <p>{T('lineageText')}</p>
+      <a href={link('/method') + '#lineage'}>{T('lineageLink')}</a>
+    </div>
+  </div>
+</section>
+
+<!-- Support teaser -->
+<section class="section">
+  <div class="container">
+    <div class="prose stack-6">
+      <p>{T('supportText')}</p>
+      <CtaGroup ctas={[{ label: T('supportCta'), href: link('/support'), variant: 'primary' }]} />
+    </div>
+  </div>
+</section>
+<!-- apps/site/src/components/pages/Home.astro -->

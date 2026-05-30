@@ -1,100 +1,135 @@
 ---
 // apps/site/src/layouts/Base.astro
-// Shared shell for all Verdecito v0.1 public pages.
+// Shared shell for all Verdecito v0.1 public pages (EN + ES).
 //
-// Internal link helper:
-//   u('/path') prepends BASE_URL so links work both locally (base='/') and
-//   on GH Pages (base='/verdecito'). External links are unchanged.
+// Each page passes:
+//   lang        'en' | 'es'
+//   title       short page title (home passes 'Verdecito' and is used as-is)
+//   description meta description for this page + language
+//   enPath      the EN canonical path of this page ('/', '/method', …) —
+//               used to build the language switch + hreflang pair
+//   ogImage     optional path to the page's OG card (e.g. '/og/home.jpg')
 //
-// Public nav (4 items only, per Content Skeleton v0.1 / C' default):
-//   Home · Living Memory · Method · Support
-// About is reachable from the Home hero micro-link and footer, NOT top nav.
+// Pages render full-width <section> blocks that carry their own .container,
+// so the shell does NOT wrap the slot in a container.
+
+import type { Lang } from '../lib/lang';
+import { htmlLang, localizePath } from '../lib/lang';
+import { nav, wordmark, footerLinks, closingLine, langSwitch } from '../copy/common';
+import LanguageSwitch from '../components/LanguageSwitch.astro';
 
 interface Props {
+  lang: Lang;
   title: string;
-  description?: string;
+  description: string;
+  enPath: string;
+  ogImage?: string;
 }
+const { lang, title, description, enPath, ogImage } = Astro.props;
 
-const {
-  title,
-  description = 'A forkable space where conversations, ideas, artifacts, and pilots leave reusable traces — not noise.',
-} = Astro.props;
-
-const fullTitle = title === 'Verdecito' ? title : `${title} — Verdecito`;
+const fullTitle = title === wordmark ? wordmark : `${title} — ${wordmark}`;
 
 // BASE is '/verdecito' in production, '' locally (BASE_URL trailing slash removed).
-// u() prefixes any site-internal path correctly in both environments.
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-function u(path: string): string { return `${BASE}${path}`; }
+const u = (path: string): string => `${BASE}${path}`;
 
-// Public v0.1 top nav — keep to 4 items.
-const nav = [
-  { href: u('/'),            label: 'Home'          },
-  { href: u('/quests/Q001'), label: 'Living Memory' },
-  { href: u('/method'),      label: 'Method'        },
-  { href: u('/support'),     label: 'Support'       },
-];
+// Language pair for this page.
+const enHref = u(enPath);
+const esHref = u(localizePath('es', enPath));
+const selfHref = u(localizePath(lang, enPath));
 
+// Absolute URLs (production has Astro.site via SITE_URL; locally it may be undefined).
+const site = Astro.site;
+const abs = (p: string): string => (site ? new URL(p, site).href : p);
+
+const ogImageAbs = ogImage ? abs(u(ogImage)) : undefined;
+
+const homeHref = u(localizePath(lang, '/'));
 const currentPath = Astro.url.pathname;
-function isCurrent(href: string): boolean {
-  if (href === u('/')) return currentPath === href || currentPath === `${BASE}/`;
-  return currentPath === href || currentPath.startsWith(`${href}/`);
-}
+const navItems = nav.map((item) => {
+  const href = u(localizePath(lang, item.path));
+  const current = item.path === '/'
+    ? currentPath === href || currentPath === `${href}/` || currentPath === homeHref
+    : currentPath === href || currentPath.startsWith(`${href}/`);
+  return { href, label: item.label[lang], current };
+});
 
-// TODO: move these constants into a canonical site-config object.
-const REPO_URL    = 'https://github.com/verdecito-life/verdecito';
-const LICENSE_URL = 'https://github.com/verdecito-life/verdecito/blob/main/LICENSE';
-const CONTACT_MAILTO = 'mailto:verdecito@barranco.life?subject=General%20contact';
+const footer = footerLinks.map((link) => {
+  if (link.external) return { label: link.label[lang], href: link.href, external: true };
+  const href = u(localizePath(lang, link.href)) + (link.hash ?? '');
+  return { label: link.label[lang], href, external: false };
+});
 ---
-
 <!doctype html>
-<html lang="en">
+<html lang={htmlLang(lang)}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
+
+    <link rel="canonical" href={abs(selfHref)} />
+    <link rel="alternate" hreflang="en" href={abs(enHref)} />
+    <link rel="alternate" hreflang="es" href={abs(esHref)} />
+    <link rel="alternate" hreflang="x-default" href={abs(enHref)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={abs(selfHref)} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+    <meta name="twitter:card" content={ogImageAbs ? 'summary_large_image' : 'summary'} />
+    {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
+
     <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
+    <link rel="icon" type="image/png" href={u('/favicon.png')} />
+    <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <header>
+    <header class="site-header">
       <div class="container">
-        <a href={u('/')} class="site-name">verde<span>cito</span></a>
-        <nav>
-          {nav.map(({ href, label }) => (
-            <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
-              {label}
-            </a>
-          ))}
-        </nav>
+        <a href={homeHref} class="wordmark">{wordmark}</a>
+        <div class="nav-row">
+          <nav class="site-nav" aria-label="Primary">
+            {navItems.map(({ href, label, current }) => (
+              <a href={href} aria-current={current ? 'page' : undefined}>{label}</a>
+            ))}
+          </nav>
+          <LanguageSwitch lang={lang} enHref={enHref} esHref={esHref} />
+        </div>
       </div>
     </header>
 
     <main>
-      <div class="container">
-        <slot />
-      </div>
+      <slot />
     </main>
 
-    <footer>
+    <footer class="site-footer">
       <div class="container">
-        <p>
-          <a href={REPO_URL}    target="_blank" rel="noopener">Repo</a> ·
-          <a href={LICENSE_URL} target="_blank" rel="noopener">License</a> ·
-          <a href={u('/method#lineage')}>Lineage</a> ·
-          <a href={u('/about')}>About</a> ·
-          <a href={CONTACT_MAILTO}>Contact</a>
-        </p>
-        <p class="footer-tagline">Verdecito lo que salga — let it sprout. 🌿</p>
+        <nav class="footer-links" aria-label="Footer">
+          {footer.map(({ href, label, external }) => (
+            <a
+              href={href}
+              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >{label}</a>
+          ))}
+        </nav>
+        <p class="footer-tagline">{closingLine[lang]}</p>
       </div>
     </footer>
   </body>
 </html>
 
 <style is:global>
+  @import '../styles/tokens.css';
   @import '../styles/global.css';
 </style>
-<!-- apps/site/src/layouts/Base.astro / shared site shell / public v0.1 nav and footer -->
+<!-- apps/site/src/layouts/Base.astro -->

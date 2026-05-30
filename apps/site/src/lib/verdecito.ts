@@ -195,3 +195,49 @@ export function getSupportInfo(): {
     channel: matter(channelRaw).data as Record<string, unknown>,
   };
 }
+
+// ── Mapped-metadata allow-list (v0.1 launch-correction) ──────────────────────
+// Public pages must NOT render canonical prose (title/summary/bodyHtml). They may
+// surface ONLY this allow-listed technical metadata, and may assert at build time
+// that a canonical object exists in the expected state (fail loud, never render).
+
+/** The only canonical fields a public page may display. No title/summary/body. */
+export interface QuestMeta {
+  id:             string;
+  lifecycle:      Lifecycle;
+  visibility:     Visibility;
+  schema_version: string;
+}
+
+/** Allow-listed metadata for a quest, looked up by canonical id. */
+export async function getQuestMetaById(id: string): Promise<QuestMeta | undefined> {
+  const q = (await getQuests()).find((x) => x.id === id);
+  if (!q) return undefined;
+  return {
+    id:             q.id,
+    lifecycle:      q.lifecycle,
+    visibility:     q.visibility,
+    schema_version: q.schema_version,
+  };
+}
+
+/**
+ * Build-time guard: assert a quest exists and is publicly publishable.
+ * Throws (fails the build loudly) if missing, not public, or not active.
+ * Returns the allow-listed metadata so a page can display the mapped fields.
+ */
+export async function assertQuestPublishable(id: string): Promise<QuestMeta> {
+  const meta = await getQuestMetaById(id);
+  if (!meta) {
+    throw new Error(
+      `[verdecito] BUILD FAIL — quest "${id}" not found as public+active in instances/verdecito/quests`,
+    );
+  }
+  if (meta.visibility !== 'public') {
+    throw new Error(`[verdecito] BUILD FAIL — quest "${id}" visibility="${meta.visibility}" (expected "public")`);
+  }
+  if (meta.lifecycle !== 'active') {
+    throw new Error(`[verdecito] BUILD FAIL — quest "${id}" lifecycle="${meta.lifecycle}" (expected "active")`);
+  }
+  return meta;
+}

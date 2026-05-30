@@ -1,0 +1,10 @@
+---
+// apps/site/src/pages/es/index.astro — Inicio (ES)
+import Base from '../../layouts/Base.astro';
+import Home from '../../components/pages/Home.astro';
+import { metaDescription } from '../../copy/common';
+const lang = 'es' as const;
+---
+<Base lang={lang} title="Verdecito" description={metaDescription.home[lang]} enPath="/" ogImage="/og/home.jpg">
+  <Home lang={lang} />
+</Base>

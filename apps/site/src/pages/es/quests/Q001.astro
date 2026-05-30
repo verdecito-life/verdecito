@@ -1,0 +1,12 @@
+---
+// apps/site/src/pages/es/quests/Q001.astro — Memoria Viva (ES)
+import Base from '../../../layouts/Base.astro';
+import LivingMemory from '../../../components/pages/LivingMemory.astro';
+import { assertQuestPublishable } from '../../../lib/verdecito';
+import { metaDescription } from '../../../copy/common';
+const lang = 'es' as const;
+const meta = await assertQuestPublishable('quest:verdecito:001');
+---
+<Base lang={lang} title="Memoria Viva" description={metaDescription.livingMemory[lang]} enPath="/quests/Q001" ogImage="/og/q001.jpg">
+  <LivingMemory lang={lang} meta={meta} />
+</Base>
