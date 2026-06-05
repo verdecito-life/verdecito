@@ -1,0 +1,29 @@
+---
+// apps/site/src/pages/quests/Q001/prompt.astro — Living Memory Prompt (EN), rendered at build time.
+import Base from '../../../layouts/Base.astro';
+import RenderedArtifact from '../../../components/RenderedArtifact.astro';
+import { Content } from '../../../artifacts/RecoverThisChat_LivingMemoryPrompt.md';
+import { href } from '../../../lib/lang';
+import { living } from '../../../copy/common';
+
+const lang = 'en' as const;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (p: string) => `${BASE}${p}`;
+---
+<Base
+  lang={lang}
+  title="The Living Memory Prompt"
+  description="Read the Living Memory Prompt: give it to an AI assistant, type “Recover this chat,” and turn an important conversation into reusable Markdown memory."
+  enPath={living.promptPage}
+>
+  <RenderedArtifact
+    Content={Content}
+    heading="The Living Memory Prompt"
+    intro="Read it here first. Give it to an AI assistant, type “Recover this chat,” and turn an important conversation into reusable Markdown memory you can correct, protect, and continue from."
+    downloadHref={u(living.promptDownload)}
+    downloadLabel="Download prompt MD"
+    downloadName="RecoverThisChat_LivingMemoryPrompt.md"
+    backHref={href(BASE, lang, '/quests/Q001')}
+    backLabel="Back to Living Memory"
+  />
+</Base>

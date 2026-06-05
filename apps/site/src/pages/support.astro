@@ -1,0 +1,10 @@
+---
+// apps/site/src/pages/support.astro — Support (EN)
+import Base from '../layouts/Base.astro';
+import Support from '../components/pages/Support.astro';
+import { metaDescription } from '../copy/common';
+const lang = 'en' as const;
+---
+<Base lang={lang} title="Support" description={metaDescription.support[lang]} enPath="/support" ogImage="/og/support.jpg">
+  <Support lang={lang} />
+</Base>

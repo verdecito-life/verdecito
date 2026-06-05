@@ -1,0 +1,10 @@
+---
+// apps/site/src/pages/es/support.astro — Apoyar (ES)
+import Base from '../../layouts/Base.astro';
+import Support from '../../components/pages/Support.astro';
+import { metaDescription } from '../../copy/common';
+const lang = 'es' as const;
+---
+<Base lang={lang} title="Apoyar" description={metaDescription.support[lang]} enPath="/support" ogImage="/og/support.jpg">
+  <Support lang={lang} />
+</Base>

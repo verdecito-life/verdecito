@@ -1,0 +1,23 @@
+---
+// apps/site/src/components/LanguageSwitch.astro
+// Quiet EN / ES switch. Links to the current page's equivalent in the other language.
+import type { Lang } from '../lib/lang';
+import { langSwitch } from '../copy/common';
+
+interface Props {
+  lang: Lang;
+  enHref: string;   // base-prefixed href to the EN equivalent
+  esHref: string;   // base-prefixed href to the ES equivalent
+}
+const { lang, enHref, esHref } = Astro.props;
+---
+<div class="lang-switch" aria-label="Language">
+  {lang === 'en'
+    ? <span aria-current="true">{langSwitch.en}</span>
+    : <a href={enHref}>{langSwitch.en}</a>}
+  <span class="sep">/</span>
+  {lang === 'es'
+    ? <span aria-current="true">{langSwitch.es}</span>
+    : <a href={esHref}>{langSwitch.es}</a>}
+</div>
+<!-- apps/site/src/components/LanguageSwitch.astro -->

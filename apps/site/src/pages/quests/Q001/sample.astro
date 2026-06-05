@@ -1,0 +1,29 @@
+---
+// apps/site/src/pages/quests/Q001/sample.astro — Public anonymized sample (EN), rendered at build time.
+import Base from '../../../layouts/Base.astro';
+import RenderedArtifact from '../../../components/RenderedArtifact.astro';
+import { Content } from '../../../artifacts/Ecotourism_Pilot_Recovery_Redacted.md';
+import { href } from '../../../lib/lang';
+import { living } from '../../../copy/common';
+
+const lang = 'en' as const;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (p: string) => `${BASE}${p}`;
+---
+<Base
+  lang={lang}
+  title="Public sample recovery"
+  description="A real, anonymized public sample recovery produced with the Living Memory Prompt: decisions, corrections, idea ledger, and a continuation point, with visible redactions."
+  enPath={living.samplePage}
+>
+  <RenderedArtifact
+    Content={Content}
+    heading="Public sample recovery"
+    intro="A real recovery, anonymized for public viewing. Third-party names and private context are masked with visible placeholders so you can see exactly what a recovery preserves before you trust the method."
+    downloadHref={u(living.sampleDownload)}
+    downloadLabel="Download sample MD"
+    downloadName="Ecotourism_Pilot_Recovery_Redacted.md"
+    backHref={href(BASE, lang, '/quests/Q001')}
+    backLabel="Back to Living Memory"
+  />
+</Base>

@@ -1,0 +1,91 @@
+---
+// apps/site/src/components/InspectSection.astro
+// Consolidated "Inspect before you download" section (merges the former
+// inspectable-example + inspect blocks). Both documents are rendered to HTML at
+// build time and embedded in <dialog> modals; full-page routes and downloads are
+// always present. Preview does not depend on download, and no client-side
+// Markdown parser is used.
+import type { Lang } from '../lib/lang';
+import { href } from '../lib/lang';
+import { living } from '../copy/common';
+import { lm } from '../copy/livingMemory';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const u = (p: string) => `${BASE}${p}`;
+const T = (k: keyof typeof lm) => lm[k][lang];
+
+const promptPage   = href(BASE, lang, living.promptPage);
+const samplePage   = href(BASE, lang, living.samplePage);
+const promptDl     = u(living.promptDownload);
+const sampleDl     = u(living.sampleDownload);
+const promptDlName = living.promptDownload.split('/').pop();
+const sampleDlName = living.sampleDownload.split('/').pop();
+---
+<h2 class="section-title">{T('inspectTitle')}</h2>
+<p class="section-intro">{T('inspectBody')}</p>
+
+<div class="cta-group inspect-actions">
+  <button class="btn btn-primary" type="button" data-preview-open="lm-prompt-preview">{T('inspectReadPrompt')}</button>
+  <button class="btn btn-secondary" type="button" data-preview-open="lm-sample-preview">{T('inspectViewSample')}</button>
+  <a class="btn-quiet" href={promptDl} download={promptDlName}>{T('inspectDlPrompt')}</a>
+  <a class="btn-quiet" href={sampleDl} download={sampleDlName}>{T('inspectDlSample')}</a>
+</div>
+<p class="preview-note">{T('inspectNote')}</p>
+
+<dialog class="preview-modal" id="lm-prompt-preview" aria-label={T('promptModalTitle')}>
+  <div class="preview-modal__bar">
+    <h3>{T('promptModalTitle')}</h3>
+    <div class="preview-modal__actions">
+      <a class="btn-quiet" href={promptPage}>{T('inspectOpenFull')} ↗</a>
+      <a class="btn-quiet" href={promptDl} download={promptDlName}>{T('inspectDlPrompt')}</a>
+      <button class="modal-close" type="button" data-preview-close aria-label={T('inspectClose')}>×</button>
+    </div>
+  </div>
+  <div class="preview-modal__body">
+    <iframe class="preview-frame" data-src={promptPage} title={T('promptModalTitle')} loading="lazy"></iframe>
+  </div>
+</dialog>
+
+<dialog class="preview-modal" id="lm-sample-preview" aria-label={T('sampleModalTitle')}>
+  <div class="preview-modal__bar">
+    <h3>{T('sampleModalTitle')}</h3>
+    <div class="preview-modal__actions">
+      <a class="btn-quiet" href={samplePage}>{T('inspectOpenFull')} ↗</a>
+      <a class="btn-quiet" href={sampleDl} download={sampleDlName}>{T('inspectDlSample')}</a>
+      <button class="modal-close" type="button" data-preview-close aria-label={T('inspectClose')}>×</button>
+    </div>
+  </div>
+  <div class="preview-modal__body">
+    <iframe class="preview-frame" data-src={samplePage} title={T('sampleModalTitle')} loading="lazy"></iframe>
+  </div>
+</dialog>
+
+<script>
+  // Progressive enhancement. The modal loads the build-time-rendered route in an
+  // iframe (set on first open). With JS off the buttons are inert, but the
+  // "Open full page" links and downloads still work and each document has its own
+  // full route — so preview never depends on download, and no client-side
+  // Markdown parser is used.
+  document.querySelectorAll('[data-preview-open]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-preview-open');
+      const dlg = id ? document.getElementById(id) : null;
+      if (!dlg) return;
+      const frame = dlg.querySelector('iframe.preview-frame') as HTMLIFrameElement | null;
+      if (frame && !frame.getAttribute('src')) {
+        const src = frame.getAttribute('data-src');
+        if (src) frame.setAttribute('src', src);
+      }
+      if ('showModal' in dlg) (dlg as HTMLDialogElement).showModal();
+    });
+  });
+  document.querySelectorAll('[data-preview-close]').forEach((btn) => {
+    btn.addEventListener('click', () => (btn.closest('dialog') as HTMLDialogElement | null)?.close());
+  });
+  document.querySelectorAll('dialog.preview-modal').forEach((dlg) => {
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) (dlg as HTMLDialogElement).close(); });
+  });
+</script>

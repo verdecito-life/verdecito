@@ -1,0 +1,10 @@
+---
+// apps/site/src/pages/about.astro — About (EN)
+import Base from '../layouts/Base.astro';
+import About from '../components/pages/About.astro';
+import { metaDescription } from '../copy/common';
+const lang = 'en' as const;
+---
+<Base lang={lang} title="About" description={metaDescription.about[lang]} enPath="/about" ogImage="/og/about.jpg">
+  <About lang={lang} />
+</Base>

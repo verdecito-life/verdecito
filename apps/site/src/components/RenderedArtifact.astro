@@ -1,0 +1,34 @@
+---
+// apps/site/src/components/RenderedArtifact.astro
+// Full-page, build-time-rendered Markdown artifact (the prompt or the public
+// sample). The Markdown is rendered to HTML at build time by Astro's pipeline —
+// no client-side parser. This route is the required direct-link / full-page
+// fallback; the modal preview on the Living Memory page links here.
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
+interface Props {
+  Content: AstroComponentFactory;
+  heading: string;
+  intro: string;
+  downloadHref: string;   // already base-prefixed
+  downloadLabel: string;
+  downloadName: string;
+  backHref: string;
+  backLabel: string;
+}
+const { Content, heading, intro, downloadHref, downloadLabel, downloadName, backHref, backLabel } = Astro.props;
+---
+<section class="section">
+  <div class="container">
+    <p class="hero-microlink" style="margin-bottom: var(--space-4);"><a href={backHref}>← {backLabel}</a></p>
+    <h1 class="section-title" style="font-size: var(--text-3xl); max-width: 24ch;">{heading}</h1>
+    <p class="section-intro" style="margin-bottom: var(--space-5);">{intro}</p>
+    <div class="cta-group">
+      <a class="btn btn-secondary" href={downloadHref} download={downloadName}>{downloadLabel}</a>
+    </div>
+    <hr style="margin-block: var(--space-8);" />
+    <div class="md-doc">
+      <Content />
+    </div>
+  </div>
+</section>

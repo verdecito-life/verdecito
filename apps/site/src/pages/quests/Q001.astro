@@ -1,0 +1,13 @@
+---
+// apps/site/src/pages/quests/Q001.astro — Living Memory (EN)
+import Base from '../../layouts/Base.astro';
+import LivingMemory from '../../components/pages/LivingMemory.astro';
+import { assertQuestPublishable } from '../../lib/verdecito';
+import { metaDescription } from '../../copy/common';
+const lang = 'en' as const;
+// Build-time guard: fail loud if Q001 is not public + active. Returns mapped metadata.
+const meta = await assertQuestPublishable('quest:verdecito:001');
+---
+<Base lang={lang} title="Living Memory" description={metaDescription.livingMemory[lang]} enPath="/quests/Q001" ogImage="/og/q001.jpg">
+  <LivingMemory lang={lang} meta={meta} />
+</Base>
