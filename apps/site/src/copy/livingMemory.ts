@@ -43,8 +43,8 @@ export const lm: Record<string, Bi> = {
   step4Title:    { en: 'Review and reuse the recovery', es: 'Revisa y reutiliza la recuperación' },
   step4Body:     { en: 'The AI returns a Markdown memory draft: what mattered, what changed, decisions, corrections, artifact seeds, a suggested title, and a continuation point.',
                    es: 'La IA devuelve un borrador de memoria en Markdown: lo que importó, lo que cambió, decisiones, correcciones, semillas de artefactos, un título sugerido y un punto claro para continuar.' },
-  step4Body2:    { en: 'You review it. You correct it. You hide or anonymize what should stay private. Then you can use it to continue in a fresh chat, move between assistants, or hand off to a collaborator.',
-                   es: 'Tú lo revisas. Tú lo corriges. Tú ocultas o anonimizas lo que debe seguir privado. Luego puedes usarlo para continuar en un chat nuevo, moverte entre asistentes o pasarlo a un colaborador.' },
+  step4Body2:    { en: 'You review it. You correct it. You hide or anonymize what should stay private. Then you can use it to continue in a fresh chat, move between assistants, or hand off to a collaborator. If you update a recovery later, keep the prior version visible — a dated note of what changed is enough.',
+                   es: 'Tú lo revisas. Tú lo corriges. Tú ocultas o anonimizas lo que debe seguir privado. Luego puedes usarlo para continuar en un chat nuevo, moverte entre asistentes o pasarlo a un colaborador. Si más adelante actualizas una recuperación, conserva visible la versión anterior — basta con una nota fechada de qué cambió.' },
 
   // Inspect before you download (consolidated)
   inspectTitle:  { en: 'Inspect before you download', es: 'Inspecciona antes de descargar' },
