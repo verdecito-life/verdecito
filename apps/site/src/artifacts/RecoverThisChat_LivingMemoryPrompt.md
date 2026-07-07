@@ -31,6 +31,12 @@ A recovery may also include one **regalito** — a small gift back: a synthesis,
    >
    > *(or, in Spanish: **Recupera este chat**)*
 
+To update an existing recovery instead of starting a new one, use:
+
+> **Update this recovery**
+>
+> *(or, in Spanish: **Actualiza esta recuperación**)*
+
 That is the whole minimum. The assistant reads the spec below and produces your recovery.
 
 ### How to give the assistant this prompt
@@ -88,6 +94,10 @@ The recovery is a **draft of your memory, not the truth.** Before you rely on it
 - keep what is useful, and correct what is not.
 
 The AI proposes; you decide. A recovery is raw material you finish.
+
+### Updating a recovery
+
+When you update a recovery, do not destroy the prior version. Keep what changed visible — a single dated line noting what changed is enough; a full changelog is not required. Decide deliberately whether you are updating the existing recovery (the topic continues, or an earlier judgment needs correcting) or starting a new one (the topic has genuinely diverged). Either is fine — just make the choice on purpose, not by default.
 
 ### What it is good for
 
@@ -231,7 +241,7 @@ Use the section order below. Include mode labels where helpful, but keep the doc
 2. **Conversation timeline** *(Standard+)* — how the chat developed, with rough spans. Preserve the path, including pivots, corrections, and discarded directions, not only the final answer.
 3. **Current best understanding** *(Standard+)* — what is decided, what is open, what should not be reopened casually, and what changed from earlier assumptions. This is the anti-regression anchor.
 4. **Idea / Nuance ledger** — a table with exactly these columns: `Item | Type | Why it matters | Possible artifact | Where it could go | Priority`. Priority values: `now`, `soon`, `seed only`, `parking lot`, `identity-level`, `public later`.
-5. **Decisions / corrections** *(Standard+)* — a table with exactly these columns: `Decision or correction | Context | Why | Consequence | Revisit?`. Corrections, such as fixed dates or reframed goals, are high-value; never let them regress.
+5. **Decisions / corrections** *(Standard+)* — a table with exactly these columns: `Decision or correction | Date | Context | Why | Consequence | Revisit?`. Corrections, such as fixed dates or reframed goals, are high-value; never let them regress. Date the judgment, not just the document: a decision without a date cannot be cleanly superseded later when it changes.
 6. **Artifact seeds** *(Standard+)* — rough drafts of anything the chat was producing: a message, plan, outline, checklist, snippet, prompt, naming set, diagram description, or next artifact. **Rough is valid — a stub beats a note saying “make a stub.”** Each seed should be liftable on its own.
 7. **Regalito / small gift back** *(Standard+, when earned)* — one original contribution the assistant can responsibly make *from the conversation’s own material*: a sharp synthesis, a name, a diagram, a research prompt, or the question that unlocks the next step. Mark it clearly as generated, not recovered fact. One strong gift beats many decorative ones. Do not force it.
 8. **Future research / model-use suggestions** *(Standard+, when useful)* — where deeper research, a stronger/different model, web/search verification, external feedback, Canvas/doc editing, CCLI/code tools, or other capabilities could help later. Note the task, why it matters, and rough priority. Suggesting is not doing — queue it, do not spend resources by default.
@@ -292,7 +302,7 @@ Regex:
 Add a comment as the first line after the title so the file is self-identifying:
 
 ```html
-<!-- recovery of: [short description of the conversation] · made with: [assistant/model] · date: [YYYY-MM-DD] · prompt: Living Memory Prompt v0.4 -->
+<!-- recovery of: [short description of the conversation] · made with: [assistant/model] · date: [YYYY-MM-DD] · prompt: Living Memory Prompt v0.5 -->
 ```
 
 For formats that do not support comments, put the same note in the nearest metadata/notes area.
@@ -359,17 +369,17 @@ Rules:
 <!-- Maintainer metadata. Normal users can ignore this block. -->
 
     Artifact: Recover This Chat — The Living Memory Prompt
-    Public version: v0.4
+    Public version: v0.5
     Status: public preview — in early public use
-    Latest file: docs/living-memory/recovery-prompt.md
-    Versioned snapshot: docs/living-memory/versions/recovery-prompt-v0.4.md
+    Latest file: apps/site/src/artifacts/RecoverThisChat_LivingMemoryPrompt.md
     Download name: RecoverThisChat_LivingMemoryPrompt.md
-    Date: 2026-06-03
+    Date: 2026-07-06
 
-Maintainer note: the user-facing version string is the footer/source line in section 4.5 (`prompt: Living Memory Prompt v0.4`). Generated user recoveries must never carry internal labels such as `candidate` or `draft`. When cutting a new version, update 4.5, this block, and the changelog together.
+Maintainer note: the user-facing version string is the footer/source line in section 4.5 (`prompt: Living Memory Prompt v0.5`). Generated user recoveries must never carry internal labels such as `candidate` or `draft`. When cutting a new version, update 4.5, this block, and the changelog together.
 
 **Changelog**
 
+- **v0.5 — 2026-07-06.** Added a `Date` column to the decisions/corrections table (judgment-dating); added the "Updating a recovery" habit and the "Update this recovery" / "Actualiza esta recuperación" trigger; corrected the canonical-home pointer in the maintainer note.
 - **v0.4 — 2026-06-03.** First finalized release of the Living Memory Prompt as a standalone, self-contained recovery prompt + specification, now in public preview. Distilled from an internal recovery practice into a generic, assistant-agnostic artifact with practical optional capability guidance, privacy and visible-redaction rules, Deep Research / image / attachment handling by reference, MVR / Standard / Full modes, required metadata and sections, strict naming conventions, suggested-title rules, local patch/fork pattern, and the *regalito* as a useful small contribution from the assistant.
 
 **Tested with**

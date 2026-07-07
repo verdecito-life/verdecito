@@ -53,3 +53,18 @@ properties:
         items:
           type: string
     additionalProperties: false
+  hypothesis:
+    type: string
+    description: What this quest exists to test.
+  evidence:
+    type: string
+    description: The minimum real evidence used to adjudicate this quest.
+  owner:
+    type: string
+    description: Who adjudicates this quest's decision gate.
+  decision_state:
+    enum: [candidate, selected, validating, adjudicating, closed]
+    description: Progress of the quest's hypothesis and evidence, distinct from lifecycle.
+  verdict:
+    enum: [continue, revise, retire]
+    description: Present only when decision_state is closed.
