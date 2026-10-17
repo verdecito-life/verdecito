@@ -7,7 +7,8 @@
     "build": "astro build && node scripts/qa-check.mjs dist",
     "build:prod": "BASE_PATH=/verdecito SITE_URL=https://verdecito-life.github.io astro build && node scripts/qa-check.mjs dist",
     "qa": "node scripts/qa-check.mjs dist",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check"
   },
   "dependencies": {
     "astro": "7.3.8",
@@ -16,6 +17,9 @@
     "marked": "^13.0.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9"
+    "@astrojs/check": "0.9.10",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "22.20.5",
+    "typescript": "6.0.3"
   }
 }
