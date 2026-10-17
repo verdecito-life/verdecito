@@ -25,14 +25,14 @@
   /* ── Text ───────────────────────────────────────────────────────────── */
   --color-text:   #273328;
   --color-muted:  #5a6655;
-  --color-subtle: #65725f;   /* was #8a9988 (2.8:1); now AA on paper */
+  --color-subtle: #8a9988;   /* decorative only (separators): 2.8:1 is not for text */
 
   /* ── Borders ────────────────────────────────────────────────────────── */
   --color-border:      #ded4c4;
   --color-border-soft: #ede8dd;
 
   /* ── Accents ────────────────────────────────────────────────────────── */
-  --color-accent:      #4d7042;   /* mid green: links, labels, underlines (was #6f8f63, 3.4:1; now AA) */
+  --color-accent:      #6f8f63;   /* mid green: rules, bullets, underlines (3.4:1: not for small text) */
   --color-accent-deep: #3f6847;   /* CTA bg, status pill, callout border */
   --color-soil:        #9a7a55;   /* lineage strip, warm soil accent */
   --color-on-accent:    #fbf7ef;   /* text on accent-deep fills (pill, CTA, trigger chip) */

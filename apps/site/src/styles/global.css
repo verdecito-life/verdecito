@@ -88,7 +88,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-accent-deep);   /* was --color-accent (3.4:1); AA with the existing deep green */
   margin-bottom: var(--space-3);
 }
 
@@ -263,7 +263,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
 }
 .card-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-2); }
 .card-body { font-size: var(--text-base); color: var(--color-muted); }
-.card-example { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-subtle); font-style: italic; }
+.card-example { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-muted); font-style: italic; }   /* was --color-subtle (2.8:1) */
 
 /* ── Callouts (quiet trust blocks) ────────────────────────────────────────*/
 
@@ -328,7 +328,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   grid-template-columns: auto 1fr;
   gap: 0.3rem 1rem;
   font-size: var(--text-xs);
-  color: var(--color-subtle);
+  color: var(--color-muted);   /* was --color-subtle (2.8:1) */
 }
 .object-meta dt { font-weight: 600; }
 
@@ -466,6 +466,9 @@ dialog.preview-modal::backdrop { background: rgba(21, 63, 42, 0.45); }
 .md-doc blockquote { margin: var(--space-4) 0; padding: var(--space-3) var(--space-5); border-left: 3px solid var(--color-accent); background: var(--color-surface-soft); color: var(--color-text); }
 .md-doc hr { margin: var(--space-8) 0; }
 .md-doc table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); margin-bottom: var(--space-4); display: block; overflow-x: auto; }
+.md-doc table:focus-visible { outline: 2px solid var(--color-accent-deep); outline-offset: 2px; }
+/* Long inline code (file names, trigger phrases) wraps instead of widening the page at 320 px. */
+.md-doc :not(pre) > code { overflow-wrap: anywhere; }
 .md-doc th, .md-doc td { border: 1px solid var(--color-border); padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
 .md-doc th { background: var(--color-surface-soft); font-weight: 600; }
 

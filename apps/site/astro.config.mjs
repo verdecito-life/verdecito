@@ -25,6 +25,9 @@ export default defineConfig({
   // Astro 7 defaults to 'jsx', which drops whitespace between inline elements
   // ("EN / ES" rendered as "EN/ES"). Keep the Astro 6 behaviour.
   compressHTML: true,
+  // Code blocks in the rendered prompt: the default github-dark theme puts comments at 3:1;
+  // the high-contrast variant passes AA.
+  markdown: { shikiConfig: { theme: 'github-dark-high-contrast' } },
   // /how-it-works is only a redirect to /quests/Q001, and 404 is not a page to index.
   // Newsreader + Inter through Astro's fonts API instead of a Google Fonts <link>:
   // the files are downloaded at build time and served from the site itself, with
