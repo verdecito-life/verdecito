@@ -17,6 +17,7 @@ import type { Lang } from '../lib/lang';
 import { htmlLang, localizePath } from '../lib/lang';
 import { nav, wordmark, footerLinks, closingLine } from '../copy/common';
 import LanguageSwitch from '../components/LanguageSwitch.astro';
+import { Font } from 'astro:assets';
 
 interface Props {
   lang: Lang;
@@ -108,12 +109,8 @@ const footer = footerLinks.map((link) => {
       } catch (e) {}
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <Font cssVariable="--font-inter" preload={[{ weight: 400, style: 'normal' }]} />
+    <Font cssVariable="--font-newsreader" preload />
   </head>
   <body>
     <header class="site-header">
