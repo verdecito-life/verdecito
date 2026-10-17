@@ -19,6 +19,9 @@ export default defineConfig({
   ...(SITE_URL ? { site: SITE_URL } : {}),
   base:   BASE_PATH,
   output: 'static',
+  // Astro 7 defaults to 'jsx', which drops whitespace between inline elements
+  // ("EN / ES" rendered as "EN/ES"). Keep the Astro 6 behaviour.
+  compressHTML: true,
   vite: {
     define: {
       __VERDECITO_REPO_ROOT__: JSON.stringify(REPO_ROOT),
