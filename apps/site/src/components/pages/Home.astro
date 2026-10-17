@@ -13,7 +13,6 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p: string) => `${BASE}${p}`;
 const link = (p: string) => href(BASE, lang, p);
 const T = (k: keyof typeof home) => home[k][lang];
 ---
@@ -22,7 +21,7 @@ const T = (k: keyof typeof home) => home[k][lang];
   title={T('heroTitle')}
   subtitle={T('heroSubtitle')}
   body={T('heroBody')}
-  imageSrc={u(images.home.src)}
+  image={images.home.src}
   imageAlt={images.home.alt[lang]}
   imageW={images.home.w}
   imageH={images.home.h}

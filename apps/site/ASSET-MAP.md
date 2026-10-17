@@ -6,24 +6,24 @@ Lightweight index of public static assets the site references. The local repo's
 may omit these heavy files; that is **not** the same as them being absent from the
 project. Generate/place them in `public/` before deploy.
 
-## Hero images — `public/images/` (referenced in `src/copy/common.ts → images`)
+## Hero images — `src/assets/images/` (imported in `src/copy/common.ts → images`)
 
 | File | Used on | Intrinsic size | Status |
 |---|---|---|---|
-| `public/images/home-hero.png` | Home hero | 1774×887 | **MISSING — generate** |
-| `public/images/living-memory.png` | Living Memory hero | 1693×929 | **MISSING — generate** |
-| `public/images/method.png` | Method hero | 1774×887 | **MISSING — generate** |
-| `public/images/support.png` | Support hero | 1774×887 | **MISSING — generate** |
+| `src/assets/images/home-hero.png` | Home hero | 1774×887 | present; served as resized AVIF/WebP by `<Picture>` |
+| `src/assets/images/living-memory.png` | Living Memory hero | 1693×929 | present; served as resized AVIF/WebP by `<Picture>` |
+| `src/assets/images/method.png` | Method hero | 1774×887 | present; served as resized AVIF/WebP by `<Picture>` |
+| `src/assets/images/support.png` | Support hero | 1774×887 | present; served as resized AVIF/WebP by `<Picture>` |
 
 ## OG / social cards — `public/og/` (referenced via `ogImage` in `src/pages/*`)
 
 | File | Used on | Suggested size | Status |
 |---|---|---|---|
-| `public/og/home.jpg` | Home | 1200×630 | **MISSING — generate** |
-| `public/og/q001.jpg` | Living Memory | 1200×630 | **MISSING — generate** |
-| `public/og/method.jpg` | Method | 1200×630 | **MISSING — generate** |
-| `public/og/support.jpg` | Support | 1200×630 | **MISSING — generate** |
-| `public/og/about.jpg` | About | 1200×630 | **MISSING — generate** |
+| `public/og/home.jpg` | Home | 1200×630 | present; served as resized AVIF/WebP by `<Picture>` |
+| `public/og/q001.jpg` | Living Memory | 1200×630 | present; served as resized AVIF/WebP by `<Picture>` |
+| `public/og/method.jpg` | Method | 1200×630 | present; served as resized AVIF/WebP by `<Picture>` |
+| `public/og/support.jpg` | Support | 1200×630 | present; served as resized AVIF/WebP by `<Picture>` |
+| `public/og/about.jpg` | About | 1200×630 | present; served as resized AVIF/WebP by `<Picture>` |
 
 ## Downloads — `public/downloads/` (single source of truth: `src/copy/common.ts → living`)
 

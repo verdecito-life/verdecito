@@ -6,6 +6,10 @@
 // Fixed copy. Do not change taglines, nav labels, or footer labels silently.
 
 import type { Bi } from '../lib/lang';
+import heroHome from '../assets/images/home-hero.png';
+import heroLivingMemory from '../assets/images/living-memory.png';
+import heroMethod from '../assets/images/method.png';
+import heroSupport from '../assets/images/support.png';
 
 /** External + contact constants (mapped values, not prose). */
 export const site = {
@@ -66,11 +70,12 @@ export const closingLine: Bi = {
 /** Language switch labels. */
 export const langSwitch = { en: 'EN', es: 'ES' };
 
-/** Production site-ready images (skeleton Appendix B). Paths are base-prefixed
- *  at render time. Filenames are the clean-handoff names. */
+/** Production site-ready images (skeleton Appendix B). Source files live in
+ *  src/assets/images so Astro can serve resized AVIF/WebP copies; filenames are
+ *  the clean-handoff names. */
 export const images = {
   home: {
-    src: '/images/home-hero.png',
+    src: heroHome,
     w: 1774, h: 887,
     alt: {
       en: 'A quiet hand-drawn image of a small living structure with roots and open paths, suggesting ideas becoming durable without losing their life.',
@@ -78,7 +83,7 @@ export const images = {
     } as Bi,
   },
   livingMemory: {
-    src: '/images/living-memory.png',
+    src: heroLivingMemory,
     w: 1693, h: 929,
     alt: {
       en: 'A quiet hand-drawn image of conversation-like lines becoming small reusable living traces, suggesting memory that can be carried forward without exposing everything.',
@@ -86,7 +91,7 @@ export const images = {
     } as Bi,
   },
   method: {
-    src: '/images/method.png',
+    src: heroMethod,
     w: 1774, h: 887,
     alt: {
       en: 'A hand-drawn modular image of open paths, protected chambers, and roots, suggesting a method that can be public while some content remains private.',
@@ -94,7 +99,7 @@ export const images = {
     } as Bi,
   },
   support: {
-    src: '/images/support.png',
+    src: heroSupport,
     w: 1774, h: 887,
     alt: {
       en: 'A quiet hand-drawn image of a small plant supported by water, light, soil, shared roots, and an open path, suggesting care that helps work continue.',
