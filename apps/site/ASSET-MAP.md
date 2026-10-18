@@ -8,6 +8,9 @@ project. Generate/place them in `public/` before deploy.
 
 ## Hero images — `src/assets/images/` (imported in `src/copy/common.ts → images`)
 
+The same four PNGs also stay in `public/images/` so their old URLs keep working
+(git stores identical files once). The pages use the `src/assets` copies.
+
 | File | Used on | Intrinsic size | Status |
 |---|---|---|---|
 | `src/assets/images/home-hero.png` | Home hero | 1774×887 | present; served as resized AVIF/WebP by `<Picture>` |
