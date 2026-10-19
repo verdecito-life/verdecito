@@ -33,15 +33,28 @@ export function htmlLang(lang: Lang): string {
 
 /**
  * Map an EN canonical path to its localized path.
- *   localizePath('en', '/method')  -> '/method'
- *   localizePath('es', '/method')  -> '/es/method'
+ *   localizePath('en', '/method')  -> '/method/'
+ *   localizePath('es', '/method')  -> '/es/method/'
  *   localizePath('es', '/')        -> '/es/'
- * Hash fragments are preserved: '/method#lineage' -> '/es/method#lineage'.
+ * Hash fragments are preserved: '/method#lineage' -> '/es/method/#lineage'.
  */
 export function localizePath(lang: Lang, enPath: string): string {
-  if (lang === 'en') return enPath;
-  if (enPath === '/') return '/es/';
-  return `/es${enPath}`;
+  const path = withSlash(enPath);
+  if (lang === 'en') return path;
+  if (path === '/') return '/es/';
+  return `/es${path}`;
+}
+
+/**
+ * Page paths end in '/', the URL GitHub Pages serves without a redirect:
+ *   '/method' -> '/method/', '/method#lineage' -> '/method/#lineage'.
+ * File paths ('/downloads/x.md') and paths already ending in '/' are unchanged.
+ */
+export function withSlash(path: string): string {
+  const [p, hash] = path.split('#', 2);
+  const last = p.slice(p.lastIndexOf('/') + 1);
+  const out = p.endsWith('/') || last.includes('.') ? p : `${p}/`;
+  return hash === undefined ? out : `${out}#${hash}`;
 }
 
 /**

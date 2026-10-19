@@ -12,7 +12,6 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p: string) => `${BASE}${p}`;
 const link = (p: string) => href(BASE, lang, p);
 const T = (k: keyof typeof method) => method[k][lang];
 
@@ -27,7 +26,7 @@ const objects = [
   title={T('heroTitle')}
   subtitle={T('heroSubtitle')}
   body={T('heroBody')}
-  imageSrc={u(images.method.src)}
+  image={images.method.src}
   imageAlt={images.method.alt[lang]}
   imageW={images.method.w}
   imageH={images.method.h}

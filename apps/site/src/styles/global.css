@@ -69,7 +69,7 @@ h3 { font-size: var(--text-xl); }
 p { line-height: var(--leading-relaxed); }
 
 a { color: var(--color-accent-deep); text-decoration-thickness: 1px; text-underline-offset: 2px; }
-a:hover { color: var(--color-frame); }
+a:hover { color: var(--color-link-hover); }
 
 strong { font-weight: 600; }
 
@@ -78,7 +78,7 @@ li { margin-block: 0.3rem; }
 
 hr { border: none; border-top: 1px solid var(--color-border); }
 
-::selection { background: var(--color-accent); color: var(--color-frame-text); }
+::selection { background: var(--color-accent); color: var(--color-on-accent); }
 
 /* ── Eyebrow / labels ─────────────────────────────────────────────────────*/
 
@@ -88,7 +88,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-accent-deep);   /* was --color-accent (3.4:1); AA with the existing deep green */
   margin-bottom: var(--space-3);
 }
 
@@ -145,6 +145,25 @@ hr { border: none; border-top: 1px solid var(--color-border); }
 .lang-switch a:hover { color: var(--color-frame-link-hover); }
 .lang-switch [aria-current="true"] { color: var(--color-frame-text); font-weight: 600; }
 .lang-switch .sep { color: var(--color-frame-text-muted); opacity: 0.6; }
+
+/* Theme switch: a real 44 px button with a fixed name and aria-pressed.
+   Hidden without JavaScript, where the page simply follows the system. */
+.theme-toggle {
+  display: none; place-items: center; width: 44px; height: 44px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--color-frame-text-muted);
+  background: transparent; color: var(--color-frame-text); cursor: pointer;
+}
+.js .theme-toggle { display: inline-grid; }
+.theme-toggle:hover { border-color: var(--color-frame-link-hover); color: var(--color-frame-link-hover); }
+.theme-toggle:focus-visible { outline: 2px solid var(--color-frame-link-hover); outline-offset: 2px; }
+.theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .moon { display: inline; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .sun { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .moon { display: inline; }
+}
 
 /* ── Footer (green frame band) ────────────────────────────────────────────*/
 
@@ -219,10 +238,10 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   cursor: pointer;
 }
-.btn-primary { background: var(--color-accent-deep); color: var(--color-frame-text); border-color: var(--color-accent-deep); }
-.btn-primary:hover { background: var(--color-frame); border-color: var(--color-frame); color: var(--color-frame-text); }
+.btn-primary { background: var(--color-accent-deep); color: var(--color-on-accent); border-color: var(--color-accent-deep); }
+.btn-primary:hover { background: var(--color-cta-hover); border-color: var(--color-cta-hover); color: var(--color-on-accent); }
 .btn-secondary { background: transparent; color: var(--color-accent-deep); border-color: var(--color-border); }
-.btn-secondary:hover { border-color: var(--color-accent-deep); color: var(--color-frame); }
+.btn-secondary:hover { border-color: var(--color-accent-deep); color: var(--color-link-hover); }
 
 /* ── Section heading block ────────────────────────────────────────────────*/
 
@@ -244,7 +263,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
 }
 .card-title { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-2); }
 .card-body { font-size: var(--text-base); color: var(--color-muted); }
-.card-example { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-subtle); font-style: italic; }
+.card-example { margin-top: var(--space-3); font-size: var(--text-sm); color: var(--color-muted); font-style: italic; }   /* was --color-subtle (2.8:1) */
 
 /* ── Callouts (quiet trust blocks) ────────────────────────────────────────*/
 
@@ -294,7 +313,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--color-frame-text);
+  color: var(--color-on-accent);
   background: var(--color-accent-deep);
   padding: 0.18em 0.6em;
   border-radius: 999px;
@@ -309,7 +328,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   grid-template-columns: auto 1fr;
   gap: 0.3rem 1rem;
   font-size: var(--text-xs);
-  color: var(--color-subtle);
+  color: var(--color-muted);   /* was --color-subtle (2.8:1) */
 }
 .object-meta dt { font-weight: 600; }
 
@@ -392,7 +411,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   font-size: var(--text-base);
   font-weight: 600;
   background: var(--color-accent-deep);
-  color: var(--color-frame-text);
+  color: var(--color-on-accent);
   padding: 0.35rem 0.7rem;
   border-radius: var(--radius);
   margin-top: var(--space-2);
@@ -406,7 +425,7 @@ hr { border: none; border-top: 1px solid var(--color-border); }
   color: var(--color-accent-deep); text-decoration: none;
   padding: 0.8rem 0.4rem;
 }
-.btn-quiet:hover { color: var(--color-frame); text-decoration: underline; text-underline-offset: 3px; }
+.btn-quiet:hover { color: var(--color-link-hover); text-decoration: underline; text-underline-offset: 3px; }
 .preview-note { margin-top: var(--space-4); font-size: var(--text-sm); color: var(--color-muted); max-width: var(--measure); }
 
 /* Preview modal (<dialog>) */
@@ -447,6 +466,9 @@ dialog.preview-modal::backdrop { background: rgba(21, 63, 42, 0.45); }
 .md-doc blockquote { margin: var(--space-4) 0; padding: var(--space-3) var(--space-5); border-left: 3px solid var(--color-accent); background: var(--color-surface-soft); color: var(--color-text); }
 .md-doc hr { margin: var(--space-8) 0; }
 .md-doc table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); margin-bottom: var(--space-4); display: block; overflow-x: auto; }
+.md-doc table:focus-visible { outline: 2px solid var(--color-accent-deep); outline-offset: 2px; }
+/* Long inline code (file names, trigger phrases) wraps instead of widening the page at 320 px. */
+.md-doc :not(pre) > code { overflow-wrap: anywhere; }
 .md-doc th, .md-doc td { border: 1px solid var(--color-border); padding: var(--space-2) var(--space-3); text-align: left; vertical-align: top; }
 .md-doc th { background: var(--color-surface-soft); font-weight: 600; }
 

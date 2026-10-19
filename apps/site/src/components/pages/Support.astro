@@ -3,7 +3,7 @@
 // Support page body. Renders ONLY from the copy store. lang-agnostic.
 // Sponsors secondary CTA included (E2): label + link only, no tiers/prices/logistics.
 import type { Lang } from '../../lib/lang';
-import { href, tl } from '../../lib/lang';
+import { tl } from '../../lib/lang';
 import { images, site, mailto } from '../../copy/common';
 import { support, supportChangesItems } from '../../copy/support';
 import Hero from '../Hero.astro';
@@ -12,8 +12,6 @@ import CtaGroup from '../CtaGroup.astro';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p: string) => `${BASE}${p}`;
 const T = (k: keyof typeof support) => support[k][lang];
 
 const ways = [
@@ -30,7 +28,7 @@ const ways = [
   title={T('heroTitle')}
   subtitle={T('heroSubtitle')}
   body={T('heroBody')}
-  imageSrc={u(images.support.src)}
+  image={images.support.src}
   imageAlt={images.support.alt[lang]}
   imageW={images.support.w}
   imageH={images.support.h}

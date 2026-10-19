@@ -25,16 +25,21 @@
   /* ── Text ───────────────────────────────────────────────────────────── */
   --color-text:   #273328;
   --color-muted:  #5a6655;
-  --color-subtle: #8a9988;
+  --color-subtle: #8a9988;   /* decorative only (separators): 2.8:1 is not for text */
 
   /* ── Borders ────────────────────────────────────────────────────────── */
   --color-border:      #ded4c4;
   --color-border-soft: #ede8dd;
 
   /* ── Accents ────────────────────────────────────────────────────────── */
-  --color-accent:      #6f8f63;   /* mid green: links, labels, underlines */
+  --color-accent:      #6f8f63;   /* mid green: rules, bullets, underlines (3.4:1: not for small text) */
   --color-accent-deep: #3f6847;   /* CTA bg, status pill, callout border */
   --color-soil:        #9a7a55;   /* lineage strip, warm soil accent */
+  --color-on-accent:    #fbf7ef;   /* text on accent-deep fills (pill, CTA, trigger chip) */
+  --color-link-hover:   #153f2a;
+  --color-cta-hover:    #153f2a;
+
+  color-scheme: light;
 
   /* ── Layout ─────────────────────────────────────────────────────────── */
   --max-w:      1120px;   /* hero / page container */
@@ -45,8 +50,8 @@
   --radius-lg:  8px;
 
   /* ── Type families (two only — no third decorative face) ────────────── */
-  --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-newsreader);   /* Newsreader, from astro.config.mjs fonts */
+  --font-body:    var(--font-inter);        /* Inter */
 
   /* ── Type scale ─────────────────────────────────────────────────────── */
   --text-xs:   0.75rem;    /* 12px */
@@ -79,3 +84,57 @@
   --space-24: 6rem;
 }
 /* apps/site/src/styles/tokens.css */
+
+/* ── Dark theme ───────────────────────────────────────────────────────────
+   Follows the system unless the visitor picks one with the header button
+   (data-theme on <html>, saved as localStorage "verdecito:theme").
+   Same values twice: CSS cannot share one block between a selector and a
+   media query. Every text pair here passes WCAG AA. */
+:root[data-theme="dark"] {
+  --color-frame:            #0c2216;
+  --color-frame-text:       #ece6d8;
+  --color-frame-text-muted: rgba(236, 230, 216, 0.76);
+  --color-frame-link:       #bcd8b6;
+  --color-frame-link-hover: #ffffff;
+  --color-bg:           #121a14;
+  --color-page:         #121a14;
+  --color-surface:      #18221a;
+  --color-surface-soft: #1e2a21;
+  --color-text:   #e8e4d8;
+  --color-muted:  #b6bfb0;
+  --color-subtle: #a0ab9c;
+  --color-border:      #344235;
+  --color-border-soft: #263127;
+  --color-accent:      #94bd86;
+  --color-accent-deep: #a3d099;
+  --color-soil:        #c9a77e;
+  --color-on-accent:   #0d1f14;
+  --color-link-hover:  #d8ecd3;
+  --color-cta-hover:   #c6e4be;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-frame:            #0c2216;
+    --color-frame-text:       #ece6d8;
+    --color-frame-text-muted: rgba(236, 230, 216, 0.76);
+    --color-frame-link:       #bcd8b6;
+    --color-frame-link-hover: #ffffff;
+    --color-bg:           #121a14;
+    --color-page:         #121a14;
+    --color-surface:      #18221a;
+    --color-surface-soft: #1e2a21;
+    --color-text:   #e8e4d8;
+    --color-muted:  #b6bfb0;
+    --color-subtle: #a0ab9c;
+    --color-border:      #344235;
+    --color-border-soft: #263127;
+    --color-accent:      #94bd86;
+    --color-accent-deep: #a3d099;
+    --color-soil:        #c9a77e;
+    --color-on-accent:   #0d1f14;
+    --color-link-hover:  #d8ecd3;
+    --color-cta-hover:   #c6e4be;
+    color-scheme: dark;
+  }
+}

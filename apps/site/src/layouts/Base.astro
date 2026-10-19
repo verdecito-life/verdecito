@@ -15,8 +15,9 @@
 
 import type { Lang } from '../lib/lang';
 import { htmlLang, localizePath } from '../lib/lang';
-import { nav, wordmark, footerLinks, closingLine, langSwitch } from '../copy/common';
+import { nav, wordmark, footerLinks, closingLine } from '../copy/common';
 import LanguageSwitch from '../components/LanguageSwitch.astro';
+import { Font } from 'astro:assets';
 
 interface Props {
   lang: Lang;
@@ -34,7 +35,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 const u = (path: string): string => `${BASE}${path}`;
 
 // Language pair for this page.
-const enHref = u(enPath);
+const enHref = u(localizePath('en', enPath));
 const esHref = u(localizePath('es', enPath));
 const selfHref = u(localizePath(lang, enPath));
 
@@ -43,6 +44,9 @@ const site = Astro.site;
 const abs = (p: string): string => (site ? new URL(p, site).href : p);
 
 const ogImageAbs = ogImage ? abs(u(ogImage)) : undefined;
+
+// Theme switch: fixed name per language; aria-pressed carries the state.
+const themeLabel = lang === 'es' ? 'Modo oscuro' : 'Dark mode';
 
 const homeHref = u(localizePath(lang, '/'));
 const currentPath = Astro.url.pathname;
@@ -77,21 +81,36 @@ const footer = footerLinks.map((link) => {
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={abs(selfHref)} />
+    <meta property="og:site_name" content={wordmark} />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
-    {ogImageAbs && <meta property="og:image" content={ogImageAbs} />}
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
+    {ogImageAbs && <>
+      <meta property="og:image" content={ogImageAbs} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={fullTitle} />
+    </>}
     <meta name="twitter:card" content={ogImageAbs ? 'summary_large_image' : 'summary'} />
     {ogImageAbs && <meta name="twitter:image" content={ogImageAbs} />}
 
     <link rel="icon" type="image/svg+xml" href={u('/favicon.svg')} />
-    <link rel="icon" type="image/png" href={u('/favicon.png')} />
     <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
+    <link rel="sitemap" href={u('/sitemap-index.xml')} />
+    <meta name="theme-color" content="#153f2a" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0c2216" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      // Before first paint: mark that JavaScript runs and apply the saved theme;
+      // with nothing saved, the system setting decides. The key is namespaced
+      // because every *.github.io project site shares one storage origin.
+      document.documentElement.classList.add('js');
+      try {
+        const t = localStorage.getItem('verdecito:theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <Font cssVariable="--font-inter" preload={[{ weight: 400, style: 'normal' }]} />
+    <Font cssVariable="--font-newsreader" preload />
   </head>
   <body>
     <header class="site-header">
@@ -104,6 +123,12 @@ const footer = footerLinks.map((link) => {
             ))}
           </nav>
           <LanguageSwitch lang={lang} enHref={enHref} esHref={esHref} />
+          <button class="theme-toggle" type="button" aria-pressed="false" aria-label={themeLabel} title={themeLabel}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="sun" d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66 1.41-1.41M4.93 19.07l1.41-1.41m0-11.32L4.93 4.93m14.14 14.14-1.41-1.41M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" />
+              <path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+            </svg>
+          </button>
         </div>
       </div>
     </header>
@@ -125,6 +150,31 @@ const footer = footerLinks.map((link) => {
         <p class="footer-tagline">{closingLine[lang]}</p>
       </div>
     </footer>
+    <script>
+      // Theme switch: toggles and saves the choice; with no choice, follows the system.
+      const KEY = 'verdecito:theme';
+      const root = document.documentElement;
+      const btn = document.querySelector<HTMLButtonElement>('.theme-toggle');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+      const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : systemDark.matches);
+      const sync = () => btn?.setAttribute('aria-pressed', String(isDark()));
+      sync();
+      systemDark.addEventListener('change', sync);
+      btn?.addEventListener('click', () => {
+        const next = isDark() ? 'light' : 'dark';
+        root.dataset.theme = next;
+        try { localStorage.setItem(KEY, next); } catch {}
+        sync();
+      });
+      // Wide Markdown tables scroll sideways on phones: make them reachable by keyboard.
+      document.querySelectorAll<HTMLTableElement>('.md-doc table').forEach((t) => { t.tabIndex = 0; });
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue;
+        else delete root.dataset.theme;
+        sync();
+      });
+    </script>
   </body>
 </html>
 
